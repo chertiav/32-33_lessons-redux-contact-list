@@ -1,0 +1,14 @@
+.loaderContainer{
+	display:flex;
+	flex-direction: column;
+	margin: 0 auto;
+}
+
+.loaderTitle {
+	margin: 10px;
+	color:#f1f1f1;
+}
+
+.loader{
+	margin: 5px;
+}

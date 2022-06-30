@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import { containerTitle } from './model/constants';
 import './App.css';
+import ContactList from './components/ContactList/ContactList';
+import ContactForm from './components/ContactForm/ContactForm';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App({contactForEdit}){
+
+	return (
+		<>
+			<header className="container-title">
+				<h1>{containerTitle}</h1>
+			</header>
+			<div className="container-main"	>
+				<ContactList />
+				<ContactForm
+					key ={contactForEdit.id}
+					contactForEdit ={contactForEdit}
+				/>
+			</div>
+		</>
+	);
 }
 
-export default App;
+const mapStateToProps =  ({ contactForEdit}) => {
+	return {
+		contactForEdit
+	}
+}
+
+export default connect(mapStateToProps)(App);
