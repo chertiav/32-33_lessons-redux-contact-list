@@ -1,15 +1,18 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteContactAction, selectContactAction } from '../../store/actions/contactListActions';
 import MyRmButton from '../../UI/button/MyRmButton/MyRmButton';
 import './ContactItem.css';
 
-function ContactItem( {contact, onDelete, onEditContact} ) {
+function ContactItem( {contact} ) {
 
-	function onItemDelete(){
-		onDelete(contact.id);
+	const dispatch = useDispatch();
+
+	function deleteContactItem(){
+		dispatch(deleteContactAction(contact.id));
 	}
-
 	function onContactEdit(){
-		onEditContact(contact);
+		dispatch(selectContactAction(contact));
 	}
 
 	return (
@@ -23,7 +26,7 @@ function ContactItem( {contact, onDelete, onEditContact} ) {
 			<MyRmButton
 				type="button"
 				className="rm-button"
-				onClick = {onItemDelete}
+				onClick = {deleteContactItem}
 			>&times;
 			</MyRmButton>
 		</div>

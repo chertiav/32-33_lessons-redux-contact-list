@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState,useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import MyActionButton from '../../UI/button/MyActionButton/MyActionButton';
 import InputList from '../InputList/InputList';
 import { getInputField } from '../../utils/contactlistUtils';
-import contactServiece from '../../API/ContactService';
 import './ContactForm.css';
-import { createContact, delContact, updateContact } from '../../store/actions/contactListActions';
+import { createContactAction, deleteContactAction, updateContactAction } from '../../store/actions/contactListActions';
 
-function ContactForm({ contactForEdit, createContact, delContact, updateContact}) {
+function ContactForm() {
 
+	const {contactForEdit} = useSelector( state => state);
+	const dispatch = useDispatch();
 	const [contact, setContact] = useState(contactForEdit);
+	const inputField = useMemo(() => getInputField(contactForEdit), [contactForEdit]);
 
 	function onInputChange(event){
 		const newContact = {
@@ -25,30 +27,17 @@ function ContactForm({ contactForEdit, createContact, delContact, updateContact}
 	}
 
 	function updContact(){
-		contactServiece.put(`/${contact.id}`, contact)
-		.then(({statusText}) => {
-			console.log(statusText);
-			updateContact(contact)
-			})
-		.catch(error => console.error(error));
+		dispatch(updateContactAction(contact));
 	}
 
 	function createNewContact () {
 		contact.id = Date.now();
-		contactServiece.post('/', contact)
-			.then(({statusText}) => {
-				console.log(statusText);
-				createContact(contact)
-				setContact(contactForEdit)
-				})
-			.catch(error => console.error(error));
+		dispatch(createContactAction(contact))
+		setContact(contactForEdit)
 	}
 
 	function onContactDelete(){
-		contactServiece.delete(`/${contact.id}`)
-		.then(({statusText}) => console.log(statusText))
-		.catch(error => console.error(error))
-		delContact(contact.id);
+		dispatch(deleteContactAction(contact.id))
 	}
 
 	function onClearField(event){
@@ -64,7 +53,7 @@ function ContactForm({ contactForEdit, createContact, delContact, updateContact}
 		<form className="main-form">
 			<InputList
 				className="form-input"
-				inputsField={getInputField(contactForEdit)}
+				inputsField={inputField}
 				contact = {contact}
 				onClearField = {onClearField}
 				onChange={onInputChange}
@@ -88,9 +77,4 @@ function ContactForm({ contactForEdit, createContact, delContact, updateContact}
 		)
 }
 
-const mapDispatchToProps = {
-	createContact,
-	delContact,
-	updateContact
-}
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default ContactForm;

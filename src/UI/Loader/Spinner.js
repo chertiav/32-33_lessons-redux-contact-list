@@ -1,10 +1,14 @@
+import { useSelector } from 'react-redux';
 import {Oval} from 'react-loader-spinner';
 import classes from './Spinner.module.css';
 
-function Spinner ({isLoading}) {
+function Spinner () {
+
+	const {isFetching} = useSelector(state => state)
+
 	return (
 		<>
-		{isLoading
+		{isFetching
 			?
 				<div className={classes.loaderContainer}>
 					<h3 className={classes.loaderTitle}>Loading...</h3>

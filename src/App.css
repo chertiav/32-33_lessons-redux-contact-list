@@ -34,6 +34,11 @@ body {
 	padding:15px;
 	text-align: center;
 }
+.message-error{
+	text-align: center;
+	color:red;
+	margin: 5px;
+}
 .container-main{
 	min-height: 100%;
 	display: flex;
